@@ -8,7 +8,6 @@ const todoSlice = createSlice({
         items:[],
     },
     reducers:{
-
         addTodo: (state, action) =>{
             const newTodo ={
                 id: Date.now().toString(),
