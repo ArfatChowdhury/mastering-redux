@@ -4,12 +4,14 @@ import TodoApp from './src/components/TodoApp';
 import { store } from './src/store/store';
 import { Provider } from 'react-redux';
 
+
 export default function App() {
   return (
     <Provider store={store}>
       <View style={styles.container}>
         {/* <Text>Open up App.js to start working on your app!</Text> */}
         <TodoApp />
+        
         <StatusBar style="auto" />
       </View>
     </Provider>

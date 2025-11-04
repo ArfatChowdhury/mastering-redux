@@ -14,7 +14,7 @@ const productSlice = createSlice({
         ]
     },
     reducers:{
-
+        
     }
 })
 export default productSlice.reducer
