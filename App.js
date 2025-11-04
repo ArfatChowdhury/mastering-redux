@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import TodoApp from './src/components/TodoApp';
 import { store } from './src/store/store';
 import { Provider } from 'react-redux';
+import ProductScreen from './src/components/ProductScreen';
 
 
 export default function App() {
@@ -10,7 +11,9 @@ export default function App() {
     <Provider store={store}>
       <View style={styles.container}>
         {/* <Text>Open up App.js to start working on your app!</Text> */}
-        <TodoApp />
+        
+        {/* <TodoApp /> */}
+        <ProductScreen/>
         
         <StatusBar style="auto" />
       </View>
