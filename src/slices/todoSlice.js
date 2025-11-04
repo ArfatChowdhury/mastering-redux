@@ -14,11 +14,24 @@ const todoSlice = createSlice({
                 text: action.payload,
                 completed: false,
             }
-            state.items.push(newTodo)
+            // state.items.push(newTodo)
+            state.items = [...state.items, newTodo]
+        },
+        
+
+        handleDelete: (state, action) =>{
+            state.items =state.items.filter(item => item.id !== action.payload)
+        },
+
+        toggleTodo : (state, action) =>{
+            const todo = state.items.find(item => item.id == action.payload)
+            if(todo){
+                todo.completed = !todo.completed
+            }
         }
     }
 })
 
 
-export const {addTodo} = todoSlice.actions
+export const {addTodo, handleDelete,toggleTodo} = todoSlice.actions
 export default todoSlice.reducer

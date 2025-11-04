@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addTodo } from '../slices/todoSlice'
+import { addTodo, handleDelete } from '../slices/todoSlice'
 
 const TodoApp = () => {
 
@@ -14,7 +14,11 @@ const TodoApp = () => {
   const dispatch = useDispatch()
 
   // console.log(dispatch(addTodo));
+const deleteTodo =(id)=>{
+dispatch(handleDelete(id))
+console.log(id);
 
+}
 
   const handleAddTodo = () => {
     if (taskText.trim().length > 0) {
@@ -46,6 +50,9 @@ const TodoApp = () => {
         renderItem={({ item }) => (
           <View style={styles.listContainer}>
             <Text style={styles.listText}>{item.text}</Text>
+            <TouchableOpacity onPress={()=>deleteTodo(item.id)}>
+            <Text style={{fontSize: 25}}>🗑️</Text>
+            </TouchableOpacity>
           </View>
  )}
       />
@@ -71,6 +78,9 @@ const TodoApp = () => {
 export default TodoApp
 
 const styles = StyleSheet.create({
+  container:{
+    flex:1
+  },
   addInput: {
     borderWidth: 1,
     padding: 10,
@@ -111,5 +121,18 @@ const styles = StyleSheet.create({
     // padding:5,
     borderRadius: 20,
     marginVertical: 10
+  },
+  listContainer:{
+    flex:1,
+    backgroundColor:'white',
+    marginVertical:10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  listText:{
+    padding:10,
+    borderRadius:15,
+
   }
 })
