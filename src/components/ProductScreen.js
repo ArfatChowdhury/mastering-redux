@@ -4,17 +4,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import Icon from '@expo/vector-icons/Ionicons'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { addToCart } from '../store/Slices/cartSlice'
+import { useNavigation } from '@react-navigation/native'
 
 const ProductScreen = () => {
   const dispatch = useDispatch()
   const products = useSelector(state => state.products.items)
   const cartItems = useSelector(state => state.cart.items)
-
-  console.log(cartItems, 'tho9 is cart');
+  const navigation = useNavigation()
+  // console.log(cartItems, 'tho9 is cart');
 
 
   const handleAddToCart = (product) => {
-    dispatch(addToCart({ productId: product.id }))
+    dispatch(addToCart({ productId: product.id, product:product }))
     console.log('Add to cart:', product.name)
   }
 
@@ -26,14 +27,17 @@ const ProductScreen = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Our Products</Text>
-        <View style={styles.cartIcon}>
-          {/* <Ionicons name=" size={24} color="#2c3e50" /> */}
+
+        <TouchableOpacity style={styles.cartIcon}
+         onPress={() => navigation.navigate('Cart')}>
+          <Ionicons name='cart' size={24} color="#2c3e50" />
           {cartItems?.length > 0 && (
             <View style={styles.cartBadge}>
               <Text style={styles.cartBadgeText}>{cartItems?.length}</Text>
             </View>
           )}
-        </View>
+        </TouchableOpacity>
+
       </View>
 
       <FlatList
@@ -92,6 +96,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f8f9fa',
     paddingHorizontal: 16,
+    marginTop: '10%'
   },
   header: {
     flexDirection: 'row',

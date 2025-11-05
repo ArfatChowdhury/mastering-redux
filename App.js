@@ -1,33 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import TodoApp from './src/components/TodoApp';
-import { store } from './src/store/store';
+// App.js
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
+import { store } from './src/store/store';
 import ProductScreen from './src/components/ProductScreen';
+import CartScreen from './src/components/CartScreen';
 
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <Provider store={store}>
-      <View style={styles.container}>
-        {/* <Text>Open up App.js to start working on your app!</Text> */}
-        
-        {/* <TodoApp /> */}
-        <ProductScreen/>
-        
-        <StatusBar style="auto" />
-      </View>
+      <NavigationContainer>
+        <Stack.Navigator 
+          initialRouteName="Products"
+          screenOptions={{
+            headerShown: false // We'll use custom headers
+          }}
+        >
+          <Stack.Screen name="Products" component={ProductScreen} />
+          <Stack.Screen name="Cart" component={CartScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    paddingTop: '10%',
-    paddingHorizontal: '4%'
-  },
-});
