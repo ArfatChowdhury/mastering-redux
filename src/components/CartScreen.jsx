@@ -1,33 +1,49 @@
 import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { decreaseQuantity, increaseQuantity } from '../store/Slices/cartSlice'
 
 const CartScreen = () => {
     const cartItems = useSelector(state => state.cart.items)
-    
+    const dispatch = useDispatch()
+
     // Calculate total price
     const totalPrice = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0)
 
     console.log(cartItems, 'from cartscreen');
 
+    const handleIncrease = (itemId) => {
+        dispatch(increaseQuantity(itemId))
+    }
+
+    const handleDecrease = (itemId) => {
+        dispatch(decreaseQuantity(itemId))
+    }
+
     const renderCartItem = ({ item }) => (
         <View style={styles.cartItem}>
             <Text style={styles.itemEmoji}>{item.image}</Text>
-            
+
             <View style={styles.itemDetails}>
                 <Text style={styles.itemName}>{item.name}</Text>
                 <Text style={styles.itemPrice}>${item.price}</Text>
             </View>
-            
+
             <View style={styles.quantityContainer}>
-                <TouchableOpacity style={styles.quantityButton}>
+                <TouchableOpacity
+                    style={styles.quantityButton}
+                    onPress={() => handleDecrease(item.id)}
+                >
                     <Icon name="remove" size={16} color="#fff" />
                 </TouchableOpacity>
-                
-                <Text style={styles.quantityText}>{item.quantity || 1}</Text>
-                
-                <TouchableOpacity style={styles.quantityButton}>
+
+                <Text style={styles.quantityText}>{item.quantity}</Text>
+
+                <TouchableOpacity
+                    style={styles.quantityButton}
+                    onPress={() => handleIncrease(item.id)}
+                >
                     <Icon name="add" size={16} color="#fff" />
                 </TouchableOpacity>
             </View>
@@ -37,7 +53,7 @@ const CartScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Shopping Cart</Text>
-            
+
             {cartItems.length === 0 ? (
                 <View style={styles.emptyCart}>
                     <Icon name="shopping-cart" size={64} color="#ccc" />
@@ -52,13 +68,13 @@ const CartScreen = () => {
                         renderItem={renderCartItem}
                         showsVerticalScrollIndicator={false}
                     />
-                    
+
                     <View style={styles.footer}>
                         <View style={styles.totalContainer}>
                             <Text style={styles.totalText}>Total:</Text>
                             <Text style={styles.totalPrice}>${totalPrice.toFixed(2)}</Text>
                         </View>
-                        
+
                         <TouchableOpacity style={styles.checkoutButton}>
                             <Text style={styles.checkoutText}>Proceed to Checkout</Text>
                         </TouchableOpacity>
