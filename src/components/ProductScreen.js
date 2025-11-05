@@ -3,19 +3,23 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from '@expo/vector-icons/Ionicons'
 import Ionicons from '@expo/vector-icons/Ionicons'
+import { addToCart } from '../store/Slices/cartSlice'
 
 const ProductScreen = () => {
   const dispatch = useDispatch()
   const products = useSelector(state => state.products.items)
   const cartItems = useSelector(state => state.cart.items)
 
-  const addToCart = (product) => {
-    // dispatch(addToCartAction(product))
+  console.log(cartItems, 'tho9 is cart');
+
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart({ productId: product.id }))
     console.log('Add to cart:', product.name)
   }
 
   const isInCart = (productId) => {
-    // return cartItems.some(item => item.id === productId)
+    return cartItems.some(item => item.id === productId)
   }
 
   return (
@@ -37,8 +41,8 @@ const ProductScreen = () => {
         keyExtractor={item => String(item.id)}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContainer}
-        numColumns={2}
-        renderItem={({item}) => (
+        // numColumns={2}
+        renderItem={({ item }) => (
           <View style={styles.card}>
             {/* Emoji Image */}
             <View style={styles.emojiContainer}>
@@ -51,19 +55,19 @@ const ProductScreen = () => {
                 {item.name}
               </Text>
               <Text style={styles.productPrice}>${item.price}</Text>
-              
-              <TouchableOpacity 
+
+              <TouchableOpacity
                 style={[
                   styles.addButton,
                   isInCart(item.id) && styles.addedButton
                 ]}
-                onPress={() => addToCart(item)}
+                onPress={() => handleAddToCart(item)}
                 disabled={isInCart(item.id)}
               >
-                <Ionicons 
-                  name={isInCart(item.id) ? "check" : null} 
-                  size={16} 
-                  color="white" 
+                <Ionicons
+                  name={isInCart(item.id) ? "checkmark" : "cart-outline"} // 🟢 Fix icon name
+                  size={16}
+                  color="white"
                   style={styles.buttonIcon}
                 />
                 <Text style={[
@@ -139,10 +143,11 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     overflow: 'hidden',
+    // flexDirection: 'row'
   },
   emojiContainer: {
     height: 120,
-    width: '100%',
+    // width: '100%',
     backgroundColor: '#ecf0f1',
     justifyContent: 'center',
     alignItems: 'center',
